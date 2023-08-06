@@ -10,7 +10,13 @@ copyright:      2022 Sascha Rechenberger
 license:        BSD-3-Clause
 license-file:   LICENSE
 build-type:     Simple
-tested-with:    GHC ==9.4.5
+tested-with:    GHC == {9.2.8,9.4.5,9.6.2}
+description:
+  An implementation of Constraint Handling Rules (CHR) in Haskell, using the FreeCHR framework.
+
+source-repository head
+  type:     git
+  location: https://github.com/noughtmare/free-chr
 
 common common
   default-extensions: TypeFamilies
@@ -19,8 +25,8 @@ common common
     base >= 4.17.1 && < 4.18,
     containers >= 0.6.7 && < 0.7,
     extra >= 1.7.14 && < 1.8,
-    lens >= 5.2.2 && < 5.3,
-    mtl >= 2.2.2 && < 2.3
+    optics >= 0.4.2 && < 0.5,
+    mtl >= 2.2.2 && < 2.3,
 
 library
   import: common
@@ -53,9 +59,9 @@ library free-chr-finite-domain
   hs-source-dirs: examples
   build-depends: 
     free-chr,
-    MonadRandom,
-    random-shuffle,
-    aeson
+    MonadRandom >= 0.6 && < 0.7,
+    random-shuffle >= 0.0.4 && < 0.1,
+    aeson >= 2.2.0 && < 2.3
   exposed-modules:
     CHR.Examples.FiniteDomain.EnumConstraints
     CHR.Examples.FiniteDomain.WaveFunctionCollapse
@@ -72,10 +78,10 @@ test-suite free-chr-test
     CHR.GenericSpec
   hs-source-dirs: test
   build-depends:
-    HUnit,
+    HUnit >= 1.6.2 && < 1.7,
+    QuickCheck >= 2.14.3 && < 2.15,
+    hspec >= 2.11.4 && < 2.12,
     MonadRandom,
-    QuickCheck,
     free-chr,
-    hspec,
     free-chr-generic,
     free-chr-finite-domain

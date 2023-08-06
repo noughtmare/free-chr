@@ -3,7 +3,7 @@ module CHR.Examples.FiniteDomain.WaveFunctionCollapse.Generator where
 import Control.Monad.Random
 import Control.Monad.Except
 import Control.Applicative
-import Control.Lens (at, (^.), to, (&), (?~))
+import Optics
 import Control.Arrow
 
 import Data.Function
@@ -66,7 +66,7 @@ wfcSolver = (outOfBounds <.> fd <.> neighborRules)
 
 
 undetermined :: Tile t => State t -> [Constraint t]
-undetermined s = map snd $ concat $ catMaybes [Map.toList <$> (s^.hConstraints.at h) | h <- [2..m]]
+undetermined s = map snd $ concat $ catMaybes [Map.toList <$> (s^.hConstraints%at h) | h <- [2..m]]
   where
     m = maximum [ k | (k, _) <- Map.toList (s^.hConstraints)]  
 

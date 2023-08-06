@@ -10,7 +10,7 @@ import qualified Data.Map as Map
 import Data.Set (Set)
 import qualified Data.Set as Set
 
-import Control.Lens
+import Optics
 import Control.Arrow
 import Data.Bifunctor (bimap)
 
@@ -51,14 +51,14 @@ fresh :: FDState s c -> (Int, FDState s c)
 fresh = id &&& id
   >>> first (^. nextId)
   >>> (\(i, s) -> (i, s & alive %~ Set.insert i))
-  >>> second (nextId +~ 1)
+  >>> second (nextId %~ (+ 1))
 
 
 add :: (Eq s, Eq v) => Int -> FDConstraint s v -> FDState s v -> FDState s v
 add i c = case entropy c of
-    Nothing -> constraints . at i ?~ c
-    Just h  -> hConstraints . at h . non Map.empty . at i ?~ c
-        >>> entropyOf . at i ?~ h 
+    Nothing -> constraints % at i ?~ c
+    Just h  -> hConstraints % at h % non Map.empty % at i ?~ c
+        >>> entropyOf % at i ?~ h 
 
 
 kill :: Int -> FDState s v -> FDState s v
@@ -66,13 +66,13 @@ kill i s =  s
     & alive %~ Set.delete i
     & del
   where
-    del = case s^.entropyOf . at i of
+    del = case s^.entropyOf % at i of
         Nothing -> constraints %~ Map.delete i
-        Just h  -> hConstraints . at h %~ fmap (Map.delete i)
+        Just h  -> hConstraints % at h %~ fmap (Map.delete i)
 
 
 isAlive :: Int -> FDState s v -> Bool
-isAlive i = (^. alive . to (elem i))
+isAlive i = view (alive % to (elem i))
 
 
 kills :: [Int] -> FDState s v -> FDState s v
@@ -84,4 +84,4 @@ record r is = history %~ Set.insert (r, is)
 
 
 check :: String -> [Int] -> FDState s c -> Bool
-check r is = (^. history . to (Set.member (r, is))) >>> not
+check r is = view (history % to (Set.member (r, is))) >>> not

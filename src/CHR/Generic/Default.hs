@@ -18,7 +18,7 @@ import qualified Data.Set as Set
 import Control.Monad.State
 import Control.Monad.Except
 
-import Control.Lens
+import Optics
 
 import Control.Arrow
 import Control.Applicative (liftA2)
@@ -83,11 +83,11 @@ fresh :: CHRState c -> (Int, CHRState c)
 fresh = id &&& id
   >>> first (^. nextId)
   >>> (\(i, s) -> (i, s & alive %~ Set.insert i))
-  >>> second (nextId +~ 1)
+  >>> second (nextId %~ (+ 1))
 
 
 add :: Int -> c -> CHRState c -> CHRState c
-add i c = constraints . at i ?~ c
+add i c = constraints % at i ?~ c
 
 
 kill :: Int -> CHRState c -> CHRState c
@@ -96,7 +96,7 @@ kill i = alive %~ Set.delete i
 
 
 isAlive :: Int -> CHRState c -> Bool
-isAlive i = (^. alive . to (elem i))
+isAlive i = view (alive % to (elem i))
 
 
 kills :: [Int] -> CHRState c -> CHRState c
@@ -108,7 +108,7 @@ record r is = history %~ Set.insert (r, is)
 
 
 check :: String -> [Int] -> CHRState c -> Bool
-check r is = (^. history . to (Set.member (r, is))) >>> not
+check r is = view (history % to (Set.member (r, is))) >>> not
 
 
 -- TODO Does not yet prioritize matchings with the callee in the removed head.
