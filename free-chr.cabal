@@ -1,0 +1,81 @@
+cabal-version: 3.0
+
+name:           free-chr
+version:        0.1.0.0
+synopsis:       Free-CHR implementation in Haskell
+category:       Language
+author:         Sascha Rechenberger
+maintainer:     sascha.rechenberger@uni-ulm.de
+copyright:      2022 Sascha Rechenberger
+license:        BSD-3-Clause
+license-file:   LICENSE
+build-type:     Simple
+tested-with:    GHC ==9.4.5
+
+common common
+  default-extensions: TypeFamilies
+  default-language:   GHC2021 
+  build-depends:
+    base >= 4.17.1 && < 4.18,
+    containers >= 0.6.7 && < 0.7,
+    extra >= 1.7.14 && < 1.8,
+    lens >= 5.2.2 && < 5.3,
+    mtl >= 2.2.2 && < 2.3
+
+library
+  import: common
+  hs-source-dirs: src
+  exposed-modules:
+    CHR
+    CHR.FiniteDomain
+    CHR.FiniteDomain.Constraints
+    CHR.FiniteDomain.Default
+    CHR.FiniteDomain.Helpers
+    CHR.FiniteDomain.Solver
+    CHR.FiniteDomain.State
+    CHR.Generic.Default
+    CHR.Generic.Helpers
+    CHR.Generic.Solver
+    CHR.Helpers
+
+library free-chr-generic
+  import: common
+  hs-source-dirs: examples
+  build-depends: free-chr
+  exposed-modules:
+    CHR.Examples.Generic.FiniteDomain
+    CHR.Examples.Generic.Identity
+    CHR.Examples.Generic.List
+    CHR.Examples.Generic.Writer
+
+library free-chr-finite-domain
+  import: common
+  hs-source-dirs: examples
+  build-depends: 
+    free-chr,
+    MonadRandom,
+    random-shuffle,
+    aeson
+  exposed-modules:
+    CHR.Examples.FiniteDomain.EnumConstraints
+    CHR.Examples.FiniteDomain.WaveFunctionCollapse
+    CHR.Examples.FiniteDomain.WaveFunctionCollapse.Generator
+    CHR.Examples.FiniteDomain.WaveFunctionCollapse.Instances
+    CHR.Examples.FiniteDomain.WaveFunctionCollapse.Tile
+
+test-suite free-chr-test
+  import: common
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+    CHR.FiniteDomainSpec
+    CHR.GenericSpec
+  hs-source-dirs: test
+  build-depends:
+    HUnit,
+    MonadRandom,
+    QuickCheck,
+    free-chr,
+    hspec,
+    free-chr-generic,
+    free-chr-finite-domain
