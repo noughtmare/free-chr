@@ -1,7 +1,5 @@
 module CHR.Examples.FiniteDomain.WaveFunctionCollapse.Instances where
 
-import Data.Aeson
-
 import Control.Monad.Random (Uniform)
 
 import GHC.Generics (Generic)
@@ -20,6 +18,3 @@ instance Tile LandscapeTile where
     Grass     -> [Water, Grass, Forrest, Mountains]
     Forrest   -> [Grass, Forrest, Mountains]
     Mountains -> [Grass, Forrest, Mountains]
-
-instance ToJSON LandscapeTile where
-  toEncoding = genericToEncoding defaultOptions

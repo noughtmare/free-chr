@@ -23,10 +23,10 @@ common common
   default-language:   GHC2021 
   build-depends:
     base ^>= {4.16,4.17,4.18},
-    containers ^>= 0.6.7,
-    extra ^>= 1.7.14,
-    optics ^>= 0.4.2,
-    mtl ^>= 2.2.2,
+    containers ^>= 0.6,
+    extra ^>= 1.7,
+    optics ^>= 0.4,
+    mtl ^>= 2.2,
 
 library
   import: common
@@ -60,8 +60,7 @@ library free-chr-finite-domain
   build-depends: 
     free-chr,
     MonadRandom ^>= 0.6,
-    random-shuffle ^>= 0.0.4,
-    aeson ^>= 2.2.0
+    random-shuffle ^>= 0.0,
   exposed-modules:
     CHR.Examples.FiniteDomain.EnumConstraints
     CHR.Examples.FiniteDomain.WaveFunctionCollapse
@@ -78,9 +77,9 @@ test-suite free-chr-test
     CHR.GenericSpec
   hs-source-dirs: test
   build-depends:
-    HUnit ^>= 1.6.2,
-    QuickCheck ^>= 2.14.3,
-    hspec ^>= 2.11.4,
+    HUnit ^>= 1.6,
+    QuickCheck ^>= 2.14,
+    hspec ^>= 2.11,
     MonadRandom,
     free-chr,
     free-chr-generic,
