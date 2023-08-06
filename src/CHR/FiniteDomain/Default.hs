@@ -6,10 +6,9 @@ import CHR.FiniteDomain.State
 import CHR.FiniteDomain.Constraints
 
 import Control.Arrow
-import Optics ((^.))
+import Optics
 import Control.Monad
 import Data.Bifunctor (Bifunctor(bimap))
-import Data.Function ((&))
 
 import Data.Map (Map)
 import qualified Data.Map as Map

@@ -19,7 +19,7 @@ import qualified Data.Map as Map
 import Data.List (nub)
 import Data.Maybe (fromJust)
 
-import Control.Lens ((^.), (&))
+import Optics ((^.), (&))
 import Control.Monad.Writer
 import Control.Monad (when)
 
