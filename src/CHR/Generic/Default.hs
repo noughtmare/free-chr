@@ -15,6 +15,7 @@ import qualified Data.Map as Map
 import Data.Set (Set)
 import qualified Data.Set as Set
 
+import Control.Monad (join, (>=>), foldM)
 import Control.Monad.State
 import Control.Monad.Except
 
@@ -23,14 +24,16 @@ import Optics
 import Control.Arrow
 import Control.Applicative (liftA2)
 
+import Data.Kind
 
+type CHRState :: Type -> Type
 data CHRState c = CHRState
   { _nextId      :: Int
   , _constraints :: Map Int c
   , _alive       :: Set Int
   , _history     :: Set (String, [Int])
   }
-  deriving (Show)
+  deriving stock (Show)
 
 makeLenses ''CHRState
 
