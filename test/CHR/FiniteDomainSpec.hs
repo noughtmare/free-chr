@@ -8,8 +8,8 @@ import Test.QuickCheck (Gen, NonEmptyList (..), getPositive, getNonNegative, Arb
 
 import Control.Monad.Random
 
-import qualified Data.Map as Map
-import qualified Data.Set as Set
+import Data.Map qualified as Map
+import Data.Set qualified as Set
 import Data.List (sort)
 import Data.Maybe (fromJust)
 
@@ -41,7 +41,7 @@ spec = do
         [const True, const True] []
         [(0, c)] []
         `shouldBe` []
-      
+
   describe "CHR.FiniteDomains.EnumConstraints" $ do
     it "handles inconsistency correctly" $ do
       evaluate fd [A `InEnum` Set.empty]
@@ -58,7 +58,7 @@ spec = do
       evaluate fd [A `InEnum` Set.fromList [1,2,3], A `InEnum` Set.fromList [4]]
         `shouldBe` (Nothing :: Maybe [FDConstraint Vars Int])
 
-      
+
     it "handles intersections trigged by `Eq` correctly" $ do
       let solver = fd <.> eq <.> fd_eq
       fromJust (evaluate solver [A `inEnum` [1,2,3], B `inEnum` [2,3,4], A `Eq` B])
@@ -78,11 +78,11 @@ spec = do
     it "handles eq reflexivity correctly" $ do
       evaluate eq [A `Eq` A :: FDConstraint Vars ()]
         `shouldBe` Just []
-    
+
     it "handles eq symmetry correctly" $ do
       evaluate eq [A `Eq` B :: FDConstraint Vars ()]
         `shouldBe` Just [A `Eq` B, B `Eq` A]
-      
+
     it "handles eq transitivity correctly" $ do
       case evaluate eq [A `Eq` B, B `Eq` C :: FDConstraint Vars ()] of
         Nothing -> assertFailure "Got Nothing"
@@ -95,7 +95,7 @@ spec = do
       let q = [IdentifierBounds (0, 0) (10, 10)] <> (getNonEmpty ps)
       fromJust (evaluate outOfBounds q)
         `shouldMatchList` ([IdentifierBounds (0, 0) (10, 10)] <> [c | c <- getNonEmpty ps, all (\(x, y) -> between 0 10 x && between 0 10 y) (identifiers c)])
-    
+
     prop "wfc generates a valid grid" $ \seed -> do
       let dim = (10, 10)
       shouldSatisfy (evalRand (uncurry wfc dim) (mkStdGen seed)) $ maybe False $ (validGrid :: Grid LandscapeTile -> Bool)

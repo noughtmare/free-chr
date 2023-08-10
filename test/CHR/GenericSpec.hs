@@ -15,7 +15,7 @@ import CHR.Examples.Generic.List
 import CHR.Examples.Generic.FiniteDomain
 
 import Data.Functor.Identity
-import qualified Data.Map as Map
+import Data.Map qualified as Map
 import Data.List (nub)
 import Data.Maybe (fromJust)
 

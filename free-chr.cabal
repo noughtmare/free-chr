@@ -20,26 +20,30 @@ source-repository head
 
 common common
   default-extensions: TypeFamilies, DerivingStrategies
-  default-language:   GHC2021 
+  default-language:   GHC2021
   build-depends:
     base ^>= {4.16,4.17,4.18},
-    containers ^>= 0.6,
-    extra ^>= 1.7,
-    optics ^>= 0.4,
     mtl ^>= {2.2,2.3},
-  ghc-options: 
+  ghc-options:
     -Weverything
     -Wno-missing-exported-signatures
     -Wno-missing-import-lists
     -Wno-missed-specialisations
     -Wno-all-missed-specialisations
     -Wno-unsafe
-    -Wno-safe
+    -Wno-missing-safe-haskell-mode
     -Wno-missing-local-signatures
     -Wno-monomorphism-restriction
+    -Wno-implicit-prelude
+    -- TODO remove these:
+    -Wno-incomplete-uni-patterns
 
 library
   import: common
+  build-depends:
+    extra ^>= 1.7,
+    containers ^>= 0.6,
+    optics ^>= 0.4,
   hs-source-dirs: src
   exposed-modules:
     CHR
@@ -67,10 +71,12 @@ library free-chr-generic
 library free-chr-finite-domain
   import: common
   hs-source-dirs: examples
-  build-depends: 
+  build-depends:
     free-chr,
     MonadRandom ^>= 0.6,
     random-shuffle ^>= 0.0,
+    containers ^>= 0.6,
+    optics ^>= 0.4,
   exposed-modules:
     CHR.Examples.FiniteDomain.EnumConstraints
     CHR.Examples.FiniteDomain.WaveFunctionCollapse
@@ -90,7 +96,9 @@ test-suite free-chr-test
     HUnit ^>= 1.6,
     QuickCheck ^>= 2.14,
     hspec ^>= 2.11,
-    MonadRandom,
+    containers ^>= 0.6,
+    optics ^>= 0.4,
+    MonadRandom ^>= 0.6,
     free-chr,
     free-chr-generic,
     free-chr-finite-domain

@@ -1,10 +1,15 @@
-module CHR.Examples.Generic.List where
+module CHR.Examples.Generic.List (Coin (..), toss) where
 
-import CHR
+import CHR.Generic.Helpers (simplify')
+import CHR.Generic.Solver (Solver)
+import Data.Kind (Type)
 
-data Coin = Unknown | Heads | Tails deriving (Show, Eq)
+type Coin :: Type
+data Coin = Unknown | Heads | Tails deriving stock (Show, Eq)
 
 toss :: Solver solver => solver [] Coin
-toss = simplify' "toss"
-  [(== Unknown)]
-  (const [[[Heads], [Tails]]])
+toss =
+  simplify'
+    "toss"
+    [(== Unknown)]
+    (const [[[Heads], [Tails]]])
